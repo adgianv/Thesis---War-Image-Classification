@@ -168,75 +168,6 @@ def find_best_threshold(y_true, probs):
     return best_threshold, best_f1
 
 
-def plot_test_images_with_labels(X_test, y_test, predictions=[], probabilities=[], num_images=10, index=0, only_wrong = False, probability = False):
-    """
-    Plots test images with their true and predicted labels.
-    
-    Parameters:
-    - X_test: Array of test images.
-    - y_test: Array of true labels for the test images.
-    - predictions: Array of predicted labels for the test images.
-    - num_images: Number of images to plot. Default is 10.
-    """
-    # Ensure num_images doesn't exceed the number of test images
-    num_images = min(num_images, len(X_test))
-    
-    # Create a figure with a grid of subplots
-    plt.figure(figsize=(20, 10))
-    i = -1
-    plotted = 0
-    if probability == False:
-        while plotted < num_images:
-            i+=1
-            try:
-                if (only_wrong == True) and (y_test[i+index]==predictions[i+index]):
-                    continue
-            except:
-                print("No more images.\n")
-                index=0
-                i=0
-                break
-            # Get the image, true label, and predicted label
-            img = X_test[i+index]
-            true_label = 'War related' if y_test[i+index] == 1 else 'Non war related'
-            predicted_label = 'War related' if predictions[i+index] == 1 else 'Non war related'
-            # Add subplot
-            plt.subplot(2, (num_images + 1) // 2, plotted + 1)
-            plt.imshow(img)
-            plt.title(f"True: {true_label}\nPred: {predicted_label}")
-            plt.axis('off')
-            plotted +=1
-        if only_wrong == True:
-            print(f'Last plotted image index: {i+index}')
-    else:   
-        while (plotted < num_images):
-            i+=1
-            try:
-                if (only_wrong == True) and (y_test[i+index]==predictions[i+index]):
-                    continue
-            except:
-                print("No more images.\n")
-                index=0
-                i=-1
-                break
-            # Get the image, true label, and predicted label
-            img = X_test[i+index]
-            true_label = 'War related' if y_test[i+index] == 1 else 'Non war related'
-            predicted_label = float(probabilities[i+index])
-            # Add subplot
-            plt.subplot(2, (num_images + 1) // 2, plotted + 1)
-            plt.imshow(img)
-            plt.title(f"True: {true_label}\nProb: {predicted_label}")
-            plt.axis('off')
-            plotted +=1
-        if only_wrong == True:
-            print(f'Last plotted image index: {i+index+1}')
-    
-    plt.tight_layout()
-    plt.show()
-
-    return index+1+i
-
 # Define pytorch dataset class
 class WarDataset(Dataset):
 
@@ -279,3 +210,143 @@ class WarDataset(Dataset):
 
     def __len__(self):
         return len(self.img_labels)
+    
+    
+    def plot_test_images_with_labels(X_test, y_test, predictions=[], probabilities=[], num_images=10, index=0, only_wrong = False, probability = False):
+        """
+        Plots test images with their true and predicted labels.
+        
+        Parameters:
+        - X_test: Array of test images.
+        - y_test: Array of true labels for the test images.
+        - predictions: Array of predicted labels for the test images.
+        - num_images: Number of images to plot. Default is 10.
+        """
+        # Ensure num_images doesn't exceed the number of test images
+        num_images = min(num_images, len(X_test))
+        
+        # Create a figure with a grid of subplots
+        plt.figure(figsize=(20, 10))
+        i = -1
+        plotted = 0
+        if probability == False:
+            while plotted < num_images:
+                i+=1
+                try:
+                    if (only_wrong == True) and (y_test[i+index]==predictions[i+index]):
+                        continue
+                except:
+                    print("No more images.\n")
+                    index=0
+                    i=0
+                    break
+                # Get the image, true label, and predicted label
+                img = X_test[i+index]
+                true_label = 'War related' if y_test[i+index] == 1 else 'Non war related'
+                predicted_label = 'War related' if predictions[i+index] == 1 else 'Non war related'
+                # Add subplot
+                plt.subplot(2, (num_images + 1) // 2, plotted + 1)
+                plt.imshow(img)
+                plt.title(f"True: {true_label}\nPred: {predicted_label}")
+                plt.axis('off')
+                plotted +=1
+            if only_wrong == True:
+                print(f'Last plotted image index: {i+index}')
+        else:   
+            while (plotted < num_images):
+                i+=1
+                try:
+                    if (only_wrong == True) and (y_test[i+index]==predictions[i+index]):
+                        continue
+                except:
+                    print("No more images.\n")
+                    index=0
+                    i=-1
+                    break
+                # Get the image, true label, and predicted label
+                img = X_test[i+index]
+                true_label = 'War related' if y_test[i+index] == 1 else 'Non war related'
+                predicted_label = float(probabilities[i+index])
+                # Add subplot
+                plt.subplot(2, (num_images + 1) // 2, plotted + 1)
+                plt.imshow(img)
+                plt.title(f"True: {true_label}\nProb: {predicted_label}")
+                plt.axis('off')
+                plotted +=1
+            if only_wrong == True:
+                print(f'Last plotted image index: {i+index+1}')
+        
+        plt.tight_layout()
+        plt.show()
+
+        return index+1+i
+    
+    
+class EvaluateImages():
+    
+    def __init__(self, img_arrays, true_labels, pred_labels):
+        self.img_arrays = img_arrays
+        self.true_labels = true_labels
+        self.pred_labels = pred_labels
+        
+    # Silent function to add subplot based on image index
+    def __add_image(self, i, index, num_images, plotted):
+        img = self.img_arrays[i+index]
+        true_label = 'War related' if self.true_labels[i+index] == 1 else 'Non war related'
+        predicted_label = 'War related' if self.pred_labels[i+index] == 1 else 'Non war related'
+        
+        # Add subplot
+        plt.subplot(2, (num_images + 1) // 2, plotted + 1)
+        plt.imshow(img)
+        plt.title(f"True: {true_label}\nPred: {predicted_label}")
+        plt.axis('off')
+        
+        
+    def plot_images(self, num_images, index):
+        plt.figure(figsize=(20, 10))
+        i = -1
+        plotted = 0
+        while plotted < num_images:
+            i+=1
+            
+            # Get the image, true label, and predicted label
+            img = self.img_arrays[i+index]
+            true_label = 'War related' if self.true_labels[i+index] == 1 else 'Non war related'
+            predicted_label = 'War related' if self.pred_labels[i+index] == 1 else 'Non war related'
+            
+            # Add subplot
+            plt.subplot(2, (num_images + 1) // 2, plotted + 1)
+            plt.imshow(img)
+            plt.title(f"True: {true_label}\nPred: {predicted_label}")
+            plt.axis('off')
+            plotted +=1
+
+        print(f'Last plotted image index: {i+index}')
+        
+        
+    def plot_false_positives(self, num_images, index):
+        plt.figure(figsize=(20, 10))
+        i = -1
+        plotted = 0
+        while plotted < num_images:
+            i+=1
+            
+            # CHECK THE INPUT IS 1 AND 0
+            # IF BELOW IS THE EXACT SAME, IT CAN JUST BE MADE INTO A FUNCTION WHICH TAKES THE INDEX IN AND OUTPUTS THE IMAGE?
+            if (self.true_labels[i+index]==0) and (self.pred_labels[i+index]==1):
+                
+                # Get the image, true label, and predicted label
+                img = self.img_arrays[i+index]
+                true_label = 'War related' if self.true_labels[i+index] == 1 else 'Non war related'
+                predicted_label = 'War related' if self.pred_labels[i+index] == 1 else 'Non war related'
+                
+                # Add subplot
+                plt.subplot(2, (num_images + 1) // 2, plotted + 1)
+                plt.imshow(img)
+                plt.title(f"True: {true_label}\nPred: {predicted_label}")
+                plt.axis('off')
+                plotted +=1
+                
+        print(f'Last plotted image index: {i+index}')
+        
+    
