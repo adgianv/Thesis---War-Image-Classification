@@ -311,7 +311,92 @@ class EvaluateImages():
                 plotted +=1
                 
         print(f'Last plotted image index: {i+index}')
-        
-        
-        
+
+
+
+def occlusion_sensitivity_mask(model, image, patch_size=5):
+    """
+    Perform occlusion sensitivity analysis with mask sliding over a given image.
     
+    Parameters:
+    - model: Trained model.
+    - image: Preprocessed input image tensor (1, C, H, W).
+    - patch_size: Size of the patch to keep.
+    
+    Returns:
+    - heatmap: Occlusion sensitivity heatmap.
+    """
+    model.eval()  # Set the model to evaluation mode
+    _, _, img_height, img_width = image.shape
+    heatmap = np.zeros((img_height, img_width))
+    
+    # Move the image tensor to the correct device
+    device = next(model.parameters()).device
+    image = image.to(device)
+    
+    for i in range(0, img_height, patch_size):
+        for j in range(0, img_width, patch_size):
+            # Create a masked image
+            occluded_image = torch.zeros_like(image)  # Mask initialized with zeros (full occlusion)
+            i_end = min(i + patch_size, img_height)
+            j_end = min(j + patch_size, img_width)
+            occluded_image[:, :, i:i_end, j:j_end] = image[:, :, i:i_end, j:j_end]
+            
+            # Predict the output for the occluded patch
+            with torch.no_grad():
+                output = model(occluded_image)
+                score = torch.sigmoid(output).item()
+            
+            # Record the score in the heatmap
+            heatmap[i:i_end, j:j_end] = score
+            # print(score)
+    
+    return heatmap
+    
+def occlusion_sensitivity(model, image, patch_size=50):
+    """
+    Perform occlusion sensitivity analysis by occluding patches of the input image and measuring the change in model output.
+    
+    Parameters:
+    - model: Trained model.
+    - image: Preprocessed input image tensor (1, C, H, W).
+    - patch_size: Size of the occlusion patch.
+    
+    Returns:
+    - heatmap: Occlusion sensitivity heatmap.
+    """
+    model.eval()  # Set the model to evaluation mode
+    _, _, img_height, img_width = image.shape
+    heatmap = np.zeros((img_height, img_width))
+    
+    # Move the image tensor to the correct device
+    device = next(model.parameters()).device
+    image = image.to(device)
+    
+    # Get the original prediction
+    with torch.no_grad():
+        original_output = model(image)
+        original_score = torch.sigmoid(original_output).item()
+    
+    for i in range(0, img_height, patch_size):
+        for j in range(0, img_width, patch_size):
+            # Create a copy of the image with a masked patch
+            occluded_image = image.clone()
+            i_end = min(i + patch_size, img_height)
+            j_end = min(j + patch_size, img_width)
+            occluded_image[:, :, i:i_end, j:j_end] = 0  # Mask with zeros
+            
+            # Predict the output for the occluded image
+            with torch.no_grad():
+                output = model(occluded_image)
+                occluded_score = torch.sigmoid(output).item()
+
+            # The sensitivity is the change in the score
+            sensitivity = original_score - occluded_score
+            # Record the sensitivity in the heatmap
+            heatmap[i:i_end, j:j_end] = sensitivity
+    
+    return heatmap
+
+def summa(s,a):
+    return(s+a)
