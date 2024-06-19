@@ -214,16 +214,21 @@ class WarDataset(Dataset):
     
 class EvaluateImages():
     
-    def __init__(self, img_arrays, true_labels, pred_labels):
+    def __init__(self, img_arrays, true_labels, pred_labels, probs):
         self.img_arrays = img_arrays
         self.true_labels = true_labels
         self.pred_labels = pred_labels
+        self.probs = probs
         
     # Silent function to add subplot based on image index
-    def __add_image(self, i, index, num_images, plotted):
+    def __add_image(self, i, index, num_images, plotted, probs):
         img = self.img_arrays[i+index]
+        
         true_label = 'War related' if self.true_labels[i+index] == 1 else 'Non war related'
-        predicted_label = 'War related' if self.pred_labels[i+index] == 1 else 'Non war related'
+        if probs==False:
+            predicted_label = 'War related' if self.pred_labels[i+index] == 1 else 'Non war related'
+        else:
+            predicted_label = round(float(self.probs[i+index]), 3)
         
         # Add subplot
         plt.subplot(2, (num_images + 1) // 2, plotted + 1)
@@ -232,62 +237,77 @@ class EvaluateImages():
         plt.axis('off')
         
         
-    def plot_images(self, index, num_images=10):
+    def plot_images(self, index, num_images=10, probs=False):
         plt.figure(figsize=(20, 10))
         i = -1
         plotted = 0
         while plotted < num_images:
             i+=1
-            self.__add_image(i, index, num_images, plotted)
+            if probs==False:
+                self.__add_image(i, index, num_images, plotted, False)
+            else:
+                self.__add_image(i, index, num_images, plotted, True)
             plotted +=1
 
         print(f'Last plotted image index: {i+index}')
         
         
-    def plot_false_positives(self, index, num_images=10):
+    def plot_false_positives(self, index, num_images=10, probs=False):
         plt.figure(figsize=(20, 10))
         i = -1
         plotted = 0
         while plotted < num_images:
             i+=1
             if (self.true_labels[i+index]==0) and (self.pred_labels[i+index]==1):
-                self.__add_image(i, index, num_images, plotted)
+                if probs==False:
+                    self.__add_image(i, index, num_images, plotted, False)
+                else:
+                    self.__add_image(i, index, num_images, plotted, True)
                 plotted +=1
                 
         print(f'Last plotted image index: {i+index}')
         
-    def plot_false_negatives(self, index, num_images=10):
+    def plot_false_negatives(self, index, num_images=10, probs=False):
         plt.figure(figsize=(20, 10))
         i = -1
         plotted = 0
         while plotted < num_images:
             i+=1
             if (self.true_labels[i+index]==1) and (self.pred_labels[i+index]==0):
-                self.__add_image(i, index, num_images, plotted)
+                if probs==False:
+                    self.__add_image(i, index, num_images, plotted, False)
+                else:
+                    self.__add_image(i, index, num_images, plotted, True)
                 plotted +=1
                 
         print(f'Last plotted image index: {i+index}')
         
-    def plot_true_positives(self, index, num_images=10):
+    def plot_true_positives(self, index, num_images=10, probs=False):
         plt.figure(figsize=(20, 10))
         i = -1
         plotted = 0
         while plotted < num_images:
             i+=1
             if (self.true_labels[i+index]==1) and (self.pred_labels[i+index]==1):
-                self.__add_image(i, index, num_images, plotted)
+                if probs==False:
+                    self.__add_image(i, index, num_images, plotted, False)
+                else:
+                    self.__add_image(i, index, num_images, plotted, True)
                 plotted +=1
                 
         print(f'Last plotted image index: {i+index}')
         
-    def plot_true_negatives(self, index, num_images=10):
+    def plot_true_negatives(self, index, num_images=10, probs=False):
         plt.figure(figsize=(20, 10))
         i = -1
         plotted = 0
         while plotted < num_images:
             i+=1
             if (self.true_labels[i+index]==0) and (self.pred_labels[i+index]==0):
-                self.__add_image(i, index, num_images, plotted)
+                if probs==False:
+                    self.__add_image(i, index, num_images, plotted, False)
+                else:
+                    self.__add_image(i, index, num_images, plotted, True)
                 plotted +=1
                 
         print(f'Last plotted image index: {i+index}')
