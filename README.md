@@ -1,4 +1,4 @@
-# War Image Classification Using ResNet in Computer Vision
+# War Image Classification Project: Computer vision applications to detect war related images in TV News Videos.
 
 ## Overview
 This project explores the application of deep learning techniques, specifically the use of the ResNet (Residual Network) architecture, for the classification of war-related images. The aim is to develop a model that can accurately categorize images based on their content, which is crucial for various applications in security, historical analysis, and media.
