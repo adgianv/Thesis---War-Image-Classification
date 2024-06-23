@@ -16,7 +16,7 @@ The thesis investigates the challenges and methodologies in classifying images r
 
 The project utilizes several datasets containing war-related images. Due to the sensitive nature of the data, please ensure you have the appropriate permissions to use these datasets.
 
-## Model Architecture
+## Model Architecture
 
 The core of the project is based on the ResNet50 architecture. ResNet is known for its ability to train very deep neural networks without the vanishing gradient problem. This makes it particularly suitable for complex image classification tasks.
 
