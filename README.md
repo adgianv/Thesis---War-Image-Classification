@@ -24,7 +24,7 @@ The core of the project is based on the ResNet50 architecture. ResNet is known f
 
 The results of the image classification experiments are documented in the thesis. Detailed performance metrics, including accuracy, precision, recall, and F1-score, are provided.
 
-## Contact
+## Contact
 
 For any questions or inquiries, please contact:
 
