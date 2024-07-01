@@ -1,32 +1,37 @@
-# War Image Classification Project: Computer vision applications to detect war related images in TV News Videos.
+# War Through the Lens of AI: Image Analysis of the Russia-Ukraine War in Spanish News
 
 ## Overview
-This project explores the application of deep learning techniques, specifically the use of the ResNet (Residual Network) architecture, for the classification of war-related images. The aim is to develop a model that can accurately categorize images based on their content, which is crucial for various applications in security, historical analysis, and media.
+The representation of war in media significantly impacts public perception and political discourse. This study aims to analyse the evolution of visual reporting on the Russia-Ukraine war in Spanish news broadcasts. We investigate how the depiction of the war on three channels, Antena 3, La Sexta, and Telecinco, changed from December 2022 to April 2024, focusing on the evolution of war coverage and on-the-ground war imagery. To achieve this, we use a subset of over 10,000 manually labelled screenshots from news broadcasts covering the Russia-Ukraine war, distinguishing between war-related and non-war-related content. We use a pre-trained ResNet50 network to build a binary classification model capable of accurately classifying if an image is war-related. Using this model, we track how the imagery of the war evolved over time, finding that as the war progressed, the proportion of war-related imagery in news broadcasts decreased, as well as war coverage overall. This trend is consistent across all three channels. Furthermore, the fluctuations in war images do not strongly correlate with actual events and military actions, suggesting a divergence between media representation and reality.
 
-## Table of Contents
-- [Introduction](#introduction)
-- [Model Architecture](#model-architecture)
-- [Results](#results)
-- [Contact](#contact)
+## Methodology
+- [Data Collection](#data-collection)
+- [Data Labeling](#data-labelling)
+- [Model Training](#model-training)
+- [Inferences](#inferences)
 
-## Introduction
-The thesis investigates the challenges and methodologies in classifying images related to warfare using state-of-the-art deep learning models. By leveraging the power of ResNet, this research aims to improve the accuracy and reliability of image classification in the context of war imagery.
+### Data Collection
+- Collected data from nightly news broadcasts of Antena 3, La Sexta, and Telecinco.
+- Each video is approximately 30 minutes long, spanning from December 2022 to April 2024.
+- Corresponding transcripts were also collected.
 
-## Datasets
+### Data Labeling
+- Created a subset of over 10,000 images.
+- Manually labeled images into three categories: Military, Physical Damage from the War, and Not War.
+- Performed Human Level Performance test.
+- The labelled dataset is published on Kaggle: [The Russia-Ukraine War Images on Spanish News](https://www.kaggle.com/datasets/viktoriiayuzkiv/the-russia-ukraine-war-images-in-spanish-news) 
 
-The project utilizes several datasets containing war-related images. Due to the sensitive nature of the data, please ensure you have the appropriate permissions to use these datasets.
+### Model Training
+- Experimented with various classification models.
+- Selected a pre-trained ResNet50 model for its superior performance.
+- Fine-tuned the model by adjusting hyperparameters and conducting error analysis.
 
-## Model Architecture
+### Inferences
+- Applied the trained model to generate predictions for the entire dataset.
+- Performed a descriptive analysis of the visual representation trends.
+- Compared trends with real events to assess alignment between news reporting and reality.
 
-The core of the project is based on the ResNet50 architecture. ResNet is known for its ability to train very deep neural networks without the vanishing gradient problem. This makes it particularly suitable for complex image classification tasks.
 
-## Results
-
-The results of the image classification experiments are documented in the thesis. Detailed performance metrics, including accuracy, precision, recall, and F1-score, are provided.
-
-## Contact
-
-For any questions or inquiries, please contact:
-
-Name: Your Name
-Email: your.email@example.com
+## Collaborators
+- Angelo Di Gianvito
+- Oliver Gatland
+- Viktoriia Yuzkiv
