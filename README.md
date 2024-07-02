@@ -1,4 +1,4 @@
-# War Through the Lens of AI: Image Analysis of the Russia-Ukraine War in Spanish News
+# War Through the Lens of AI: Image Analysis of the Russia-Ukraine War on Spanish News
 Computer Vision Project: Building an image Classification Model to detect war in News broadcasts. Subsequent inference with the obtained results is included. 
 
 ## Overview
