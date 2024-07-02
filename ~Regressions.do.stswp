@@ -48,3 +48,7 @@ reg war_images ln_launched if channel=="a3"
 reg war_images ln_launched if channel=="la6"
 reg war_images ln_launched if channel=="t5"
 
+
+
+
+
