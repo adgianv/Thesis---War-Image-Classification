@@ -1,7 +1,7 @@
 # War Through the Lens of AI: Image Analysis of the Russia-Ukraine War in Spanish News
 Computer Vision Project: Building an image Classification Model to detect war in News broadcasts. Subsequent inference with the obtained results is included. 
 
-[Published Paper](#https://repositori.upf.edu/items/5e3e3300-72b7-4e99-81bd-0811e6968caf)
+[Published Paper](https://repositori.upf.edu/items/5e3e3300-72b7-4e99-81bd-0811e6968caf)
 
 ## Overview
 The representation of war in media significantly impacts public perception and political discourse. This study aims to analyse the evolution of visual reporting on the Russia-Ukraine war in Spanish news broadcasts. We investigate how the depiction of the war on three channels, Antena 3, La Sexta, and Telecinco, changed from December 2022 to April 2024, focusing on the evolution of war coverage and on-the-ground war imagery. 
