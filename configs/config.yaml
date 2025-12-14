@@ -1,0 +1,100 @@
+# War Image Classification Configuration
+# ==========================================
+
+# Data settings
+data:
+  kaggle_dataset: "viktoriiayuzkiv/the-russia-ukraine-war-images-in-spanish-news"
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  images_dir: "data/raw/images"
+  labels_file: "data/raw/labels.csv"
+  train_labels: "data/processed/train_labels.csv"
+  val_labels: "data/processed/val_labels.csv"
+  test_labels: "data/processed/test_labels.csv"
+  
+  # Train/val/test split ratios
+  split:
+    train: 0.70
+    val: 0.15
+    test: 0.15
+    random_seed: 42
+    stratify: true  # Stratify by label to maintain class distribution
+
+# Image preprocessing
+preprocessing:
+  image_size: 256
+  normalize:
+    mean: [0.485, 0.456, 0.406]  # ImageNet mean
+    std: [0.229, 0.224, 0.225]   # ImageNet std
+
+# Model settings
+model:
+  architecture: "resnet50"
+  pretrained: true
+  num_classes: 1  # Binary classification with sigmoid
+  
+  # Head configuration
+  head:
+    type: "custom"  # "base" (single linear) or "custom" (multi-layer)
+    hidden_dims: [512, 256]  # Only used if type is "custom"
+  
+  # Transfer learning: which layers to unfreeze
+  # Options: [] (freeze all), ["fc"], ["layer4", "fc"], ["layer3", "layer4", "fc"], ["all"]
+  unfreeze_layers: ["layer3", "layer4", "fc"]
+
+# Training settings
+training:
+  batch_size: 32
+  epochs: 10
+  patience: 3  # Early stopping patience
+  
+  optimizer:
+    name: "adam"
+    learning_rate: 0.0001
+    weight_decay: 0.0
+  
+  criterion: "bce_with_logits"
+  
+  # Use weighted sampler to handle class imbalance
+  use_weighted_sampler: true
+  
+  # Checkpointing
+  checkpoint_dir: "model_weights"
+  save_best_only: true
+
+# Evaluation settings
+evaluation:
+  threshold: 0.5  # Default classification threshold
+  find_optimal_threshold: true  # Find threshold that maximizes F1 on validation set
+  
+  metrics:
+    - accuracy
+    - precision
+    - recall
+    - f1
+    - roc_auc
+
+# Inference settings
+inference:
+  batch_size: 32
+  threshold: 0.5
+  output_dir: "predictions"
+
+# Bias correction settings (from confusion matrix analysis)
+bias_correction:
+  enabled: true
+  # These values come from the test set confusion matrix
+  sensitivity: 0.84   # TP / (TP + FN) - Recall
+  specificity: 0.97   # TN / (TN + FP)
+  precision: 0.88     # TP / (TP + FP)
+  npv: 0.96           # TN / (TN + FN) - Negative Predictive Value
+
+# Device settings
+device: "auto"  # "auto", "cuda", "mps", or "cpu"
+
+# Logging
+logging:
+  level: "INFO"
+  save_plots: true
+  plots_dir: "report_charts"
+

@@ -1,1 +1,73 @@
+# War Image Classification .gitignore
+# ====================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+
+# Data - Raw images (too large for git)
+data/raw/images/
+data/raw/*.zip
+
+# Predictions output (regenerated)
+# predictions/  # Uncomment if you don't want to track predictions
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# NOTE: Model weights are NOT ignored - they are tracked in git
+# If you want to ignore them, uncomment the following line:
+# model_weights/*.pth
